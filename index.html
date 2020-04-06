@@ -1,0 +1,330 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>avroschema-definer</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">avroschema-definer</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>avroschema-definer</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 align="center">Welcome to avroschema-definer 👋</h1>
+				<p>
+					<a href="https://www.npmjs.com/package/avroschema-definer" target="_blank">
+						<img alt="Version" src="https://img.shields.io/npm/v/avroschema-definer.svg">
+					</a>
+					<a href="https://www.isc.org/licenses/" target="_blank">
+						<img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-yellow.svg" />
+					</a>
+					<img alt="Release" src="https://github.com/Sujimoshi/avroschema-definer/workflows/Release/badge.svg" />
+					<a href="https://codecov.io/gh/Sujimoshi/avroschema-definer" target="_blank">
+						<img alt="License: ISC" src="https://codecov.io/gh/Sujimoshi/avroschema-definer/branch/master/graph/badge.svg" />
+					</a>
+				</p>
+				<p>This package provides simple, well typed API for creating Avro Schemas</p>
+				<a href="#🔥-install" id="🔥-install" style="color: inherit; text-decoration: none;">
+					<h2>🔥 Install</h2>
+				</a>
+				<pre><code class="language-sh">npm install avroschema-definer</code></pre>
+				<a href="#👌-usage" id="👌-usage" style="color: inherit; text-decoration: none;">
+					<h2>👌 Usage</h2>
+				</a>
+				<p>This package is used to create Avro Schema definitions. It was written in typescript and provide a lot of usefull info from typings, such as infering interface types from schema. Here is an example:</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> A <span class="hljs-keyword">from</span> <span class="hljs-string">'avroschema-definer'</span>
+
+<span class="hljs-comment">// Lets define a simple object schema</span>
+<span class="hljs-keyword">const</span> UserSchema = A.name(<span class="hljs-string">'user'</span>).namespace(<span class="hljs-string">'com.mysite'</span>).record({
+  name: A.string(),
+  id: A.string().logicalType(<span class="hljs-string">'uuid'</span>),
+  password: A.string(),
+  role: A.enum(<span class="hljs-string">'client'</span>, <span class="hljs-string">'suplier'</span>),
+  birthday: A.union(A.null(), A.long()).default(<span class="hljs-literal">null</span>)
+})
+
+<span class="hljs-comment">// Now lets get interface of User from schema</span>
+<span class="hljs-keyword">type</span> User = <span class="hljs-keyword">typeof</span> UserSchema.type;
+<span class="hljs-comment">/*
+  type User = {
+    name: string,
+    email: string,
+    password: string,
+    role: 'client' | 'suplier',
+    birthday: number | null | undefined
+  }
+*/</span>
+
+<span class="hljs-comment">// Or get plain Avro Schema using .valueOf()</span>
+<span class="hljs-built_in">console</span>.log(UserSchema.valueOf())
+<span class="hljs-comment">/*
+{
+  name: 'user',
+  namespace: 'com.mysite',
+  type: 'record',
+  fields: [
+    { name: 'name', type: { type: 'string' } },
+    { name: 'id', type: { type: 'string', logicalType: 'uuid' } },
+    { name: 'password', type: { type: 'string' } },
+    {
+      name: 'role',
+      type: {
+        name: 'role_value',
+        type: 'enum',
+        symbols: [ 'client', 'suplier' ]
+      }
+    },
+    {
+      default: null,
+      name: 'birthday',
+      type: [ { type: 'null' }, { type: 'long' } ]
+    }
+  ]
+}
+*/</span>
+</code></pre>
+				<a href="#⭐️-show-your-support" id="⭐️-show-your-support" style="color: inherit; text-decoration: none;">
+					<h2>⭐️ Show your support</h2>
+				</a>
+				<p>Give a ⭐️ if this project helped you!</p>
+				<a href="#📚-documentation" id="📚-documentation" style="color: inherit; text-decoration: none;">
+					<h2>📚 Documentation</h2>
+				</a>
+				<p>Full documentation available <a href="https://sujimoshi.github.io/avroschema-definer/">here</a></p>
+				<a href="#main-exported-variable-a-a-hrefhttpssujimoshigithubioavroschema-definerclassesschemafactoryhtmlschemafactorya-extends-a-hrefhttpssujimoshigithubioavroschema-definerclassesbaseschemahtmlbaseschemaa" id="main-exported-variable-a-a-hrefhttpssujimoshigithubioavroschema-definerclassesschemafactoryhtmlschemafactorya-extends-a-hrefhttpssujimoshigithubioavroschema-definerclassesbaseschemahtmlbaseschemaa" style="color: inherit; text-decoration: none;">
+					<h3>Main exported variable A: <a href="https://sujimoshi.github.io/avroschema-definer/classes/schemafactory.html">SchemaFactory</a> extends <a href="https://sujimoshi.github.io/avroschema-definer/classes/baseschema.html">BaseSchema</a></h3>
+				</a>
+				<table>
+					<tr>
+						<th>Method</th>
+						<th>Description</th>
+						<th>Avro Schema</th>
+					</tr>
+					<tr>
+						<td>A.null()</td>
+						<td>No value</td>
+						<td>{ "type": "null" }</td>
+					</tr>
+					<tr>
+						<td>A.boolean()</td>
+						<td>A binary value</td>
+						<td>{ "type": "boolean" }</td>
+					</tr>
+					<tr>
+						<td>A.int()</td>
+						<td>32-bit signed integer</td>
+						<td>{ "type": "int" }</td>
+					</tr>
+					<tr>
+						<td>A.long()</td>
+						<td>64-bit signed integer</td>
+						<td>{ "type": "long" }</td>
+					</tr>
+					<tr>
+						<td>A.float()</td>
+						<td>Single precision (32-bit) IEEE 754 floating-point number</td>
+						<td>{ "type": "float" }</td>
+					</tr>
+					<tr>
+						<td>A.double()</td>
+						<td>Double precision (64-bit) IEEE 754 floating-point number</td>
+						<td>{ "type": "double" }</td>
+					</tr>
+					<tr>
+						<td>A.bytes()</td>
+						<td>Sequence of 8-bit unsigned bytes</td>
+						<td>{ "type": "bytes" }</td>
+					</tr>
+					<tr>
+						<td>A.string()</td>
+						<td>Unicode character sequence</td>
+						<td>{ "type": "string" }</td>
+					</tr>
+					<tr>
+						<td>A.record(fields: { fieldName: Schema })</td>
+						<td>Fully typed record</td>
+						<td>{ "type": "record", fields: [] } }</td>
+					</tr>
+					<tr>
+						<td>A.enum(...symbols: string[])</td>
+						<td>Listing symbols, as JSON strings</td>
+						<td>{ type: "enum", symbols: [] }</td>
+					</tr>
+					<tr>
+						<td>A.array(items: Schema)</td>
+						<td>Schema for the array of items</td>
+						<td>{ "type": "array" items: {} }</td>
+					</tr>
+					<tr>
+						<td>A.union(...schemas: Schema[])</td>
+						<td>Declares a schema which may be one of given types</td>
+						<td>[{ type: "" }, { type: "" }]</td>
+					</tr>
+					<tr>
+						<td>A.fixed(size: number)</td>
+						<td>Schema which specify the number of bytes per value</td>
+						<td>{ "type": "fixed", "size": 16 }</td>
+					</tr>
+					<tr>
+						<td>A.raw(plain: {})</td>
+						<td>Set custom schema values</td>
+						<td>{ ...plain }</td>
+					</tr>
+				</table>
+				<a href="#🤝-contributing" id="🤝-contributing" style="color: inherit; text-decoration: none;">
+					<h2>🤝 Contributing</h2>
+				</a>
+				<p>Contributions, issues and feature requests are welcome!<br />Feel free to check <a href="https://github.com/Sujimoshi/avroschema-definer/issues">issues page</a>.</p>
+				<a href="#run-tests" id="run-tests" style="color: inherit; text-decoration: none;">
+					<h3>Run tests</h3>
+				</a>
+				<pre><code class="language-sh">npm run <span class="hljs-built_in">test</span></code></pre>
+				<a href="#author" id="author" style="color: inherit; text-decoration: none;">
+					<h2>Author</h2>
+				</a>
+				<p>👤 <strong>Igor Solomakha <a href="mailto:&#102;&#x75;&#109;&#111;&#46;&#x73;&#117;&#x6a;&#x69;&#109;&#111;&#x73;&#104;&#x69;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#102;&#x75;&#109;&#111;&#46;&#x73;&#117;&#x6a;&#x69;&#109;&#111;&#x73;&#104;&#x69;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></strong></p>
+				<ul>
+					<li>Github: <a href="https://github.com/Sujimoshi">@Sujimoshi</a></li>
+				</ul>
+				<a href="#📝-license" id="📝-license" style="color: inherit; text-decoration: none;">
+					<h2>📝 License</h2>
+				</a>
+				<p>Copyright © 2020 <a href="https://github.com/Sujimoshi">Igor Solomakha <a href="mailto:&#102;&#x75;&#109;&#x6f;&#46;&#x73;&#117;&#x6a;&#105;&#x6d;&#x6f;&#x73;&#104;&#105;&#x40;&#103;&#x6d;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#109;">&#102;&#x75;&#109;&#x6f;&#46;&#x73;&#117;&#x6a;&#105;&#x6d;&#x6f;&#x73;&#104;&#105;&#x40;&#103;&#x6d;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#109;</a></a>.<br />
+				This project is <a href="https://www.isc.org/licenses/">ISC</a> licensed.</p>
+				<hr>
+				<p><em>This README was generated with ❤️ by <a href="https://github.com/kefranabg/readme-md-generator">readme-md-generator</a></em></p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/baseschema.html" class="tsd-kind-icon">Base<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/schemafactory.html" class="tsd-kind-icon">Schema<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/arrayavroschema.html" class="tsd-kind-icon">Array<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/baseavroschema.html" class="tsd-kind-icon">Base<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/common.html" class="tsd-kind-icon">Common</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/enumavroschema.html" class="tsd-kind-icon">Enum<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/fieldavroschema.html" class="tsd-kind-icon">Field<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/fixedavroschema.html" class="tsd-kind-icon">Fixed<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/mapavroschema.html" class="tsd-kind-icon">Map<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/recordavroschema.html" class="tsd-kind-icon">Record<wbr>Avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#a" class="tsd-kind-icon">A</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#pick" class="tsd-kind-icon">pick</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
