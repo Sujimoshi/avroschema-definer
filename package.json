@@ -36,8 +36,5 @@
     "typedoc": "^0.17.3",
     "typescript": "^3.8.3"
   },
-  "dependencies": {
-    "avro-js": "^1.9.2",
-    "avsc": "^5.4.19"
-  }
+  "dependencies": {}
 }
