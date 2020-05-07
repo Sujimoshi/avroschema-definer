@@ -80,8 +80,8 @@ export default class BaseSchema<T = any, S = BaseAvroSchema> {
    *
    * @reference http://avro.apache.org/docs/1.9.2/spec.html#schema_complex
    */
-  default (def: T): BaseSchema<T | undefined, S> {
-    return this.copyWith({ context: { default: def } }) as any
+  default (def: T) {
+    return this.copyWith({ context: { default: def } })
   }
 
   /**
