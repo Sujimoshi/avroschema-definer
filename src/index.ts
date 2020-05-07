@@ -79,7 +79,7 @@ export class SchemaFactory extends BaseSchema {
    * @reference https://avro.apache.org/docs/1.9.2/spec.html#schema_primitive
    */
   bytes () {
-    return new BaseSchema<string>({ type: 'bytes' }).copyWith(this)
+    return new BaseSchema<Buffer>({ type: 'bytes' }).copyWith(this)
   }
 
   /**
@@ -160,7 +160,7 @@ export class SchemaFactory extends BaseSchema {
    * @reference http://avro.apache.org/docs/1.9.2/spec.html#Fixed
    */
   fixed (size: number) {
-    return new BaseSchema<number, FixedAvroSchema>(
+    return new BaseSchema<Buffer, FixedAvroSchema>(
       { type: 'fixed', size },
       ['name', 'namespace', 'aliases']
     ).copyWith(this)

@@ -35,8 +35,8 @@ export default class BaseSchema<T = any, S = BaseAvroSchema> {
    *
    * @reference http://avro.apache.org/docs/1.9.2/spec.html#Logical+Types
    */
-  logicalType (logicalType: BaseAvroSchema['logicalType'], raw?: { precision: number, scale?: number }) {
-    return this.copyWith({ plain: { logicalType, ...raw } })
+  logicalType <N = T> (logicalType: BaseAvroSchema['logicalType'], raw?: { precision: number, scale?: number }): BaseSchema<N, S> {
+    return this.copyWith({ plain: { logicalType, ...raw } }) as any
   }
 
   /**
