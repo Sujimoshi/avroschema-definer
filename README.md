@@ -22,7 +22,10 @@ npm install avroschema-definer
 
 ## 👌 Usage
 
-This package is used to create Avro Schema definitions. It was written in typescript and provide a lot of usefull info from typings, such as infering interface types from schema. Here is an example:
+This package is used to create Avro Schema definitions.  It was written in typescript and provide a lot of usefull info from typings, such as infering interface types from schema. 
+> This package does not compile your schemas, it just provide simple API for creation of schemas (see [avsc](https://github.com/mtth/avsc) for compilation purposes).
+
+Here is an example:
 
 ```ts
 import A from 'avroschema-definer'
@@ -44,7 +47,7 @@ type User = typeof UserSchema.type;
     email: string,
     password: string,
     role: 'client' | 'suplier',
-    birthday: number | null | undefined
+    birthday: number | null
   }
 */
 
