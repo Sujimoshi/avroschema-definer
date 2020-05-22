@@ -17,6 +17,15 @@ const fromPlain = (avro) => {
     union: (union) => {
       return `.union(${union.map(fromPlain).join(', ')})`
     },
+    fixed: (fixed) => {
+      return `.fixed(${fixed.size})`
+    },
+    map: (map) => {
+      return `.map(${fromPlain(map.values)})`
+    },
+    enum: (enumerable) => {
+      return `.enum('${enumerable.symbols.join('\', \'')}')`
+    },
     default: (type, typeName) => {
       return `.${typeName}()`
     }
