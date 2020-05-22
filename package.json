@@ -8,7 +8,7 @@
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "build": "tsc",
     "check": "npm run lint && npm run build && npm run test",
-    "docs": "typedoc --out documentation --mode file src"
+    "docs": "typedoc --out documentation --mode file src && cp -r ./converter ./documentation"
   },
   "keywords": [
     "avro",
