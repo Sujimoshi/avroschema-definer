@@ -12,7 +12,9 @@
   </a>
 </p>
 
-This package provides simple, well typed API for creating Avro Schemas
+This package provides simple, well typed API for creating Avro Schemas.
+
+### [Homepage](https://sujimoshi.github.io/avroschema-definer/) 
 
 ## 🔥 Install
 
@@ -24,8 +26,6 @@ npm install avroschema-definer
 
 This package is used to create Avro Schema definitions.  It was written in typescript and provide a lot of usefull info from typings, such as infering interface types from schema. 
 > This package does not compile your schemas, it just provide simple API for creation of schemas (see [avsc](https://github.com/mtth/avsc) for compilation purposes).
-
-> Also you can transpile your plain Avro Schemas into jsonschema-definer code [here](https://sujimoshi.github.io/avroschema-definer/converter/index.html)
 
 Here is an example:
 
@@ -83,11 +83,126 @@ console.log(UserSchema.valueOf())
 
 ```
 
+## 🏃‍♂️ Migration from plain avro schemas
+Working with plain .avsc schemas can be painfull. So I written small cli which can transpile your plain avro schemas into `avroschema-definer` code.
+
+```bash
+$ avroschema-definer template --help
+avroschema-definer template <schema> [template] [out]
+
+Allows you to transpile your .avsc files into js/ts code using ejs templates.
+
+Options:
+  --template, -t  Path to .ejs template file. If not provided default template
+                  will be used. Options that can be used in the template:
+
+                  comment.description? - Description parsed from comments
+
+                  comment.tags?[tag].(tag | name | type | description) - Tags
+                  in format (@tag {type} name description) parsed from comments
+
+                  schema - Your plain avro schema parsed using `JSON.parse`
+
+                  avscToDefinerCode(schema) - Function that transpile your
+                  plain avro schema in avroschema-definer code
+                                                              [By default: null]
+  --out, -o       Output file path (relative to CWD)
+                                               [By default: "./outputSchema.ts"]
+  --schema, -s    Path to your .avsc file to parse (relative to CWD)
+```
+
+Example:
+
+Lets say we have plain `schema.avsc`:
+
+```avsc
+/**
+ * Some description
+ *
+ * @variableName NameFromCommentTag
+ */
+{
+  "namespace": "namespace",
+  "type": "record",
+  "name": "someRecord",
+  "fields": [
+    { "name": "field", "aliases": ["first"], "type": { "type": "string", "logicalType": "uuid" }, "doc": "some field" },
+    { "name": "arr", "order": "ascending", "type": { "type": "array", "items": "string" }, "doc": "some field" },
+    { "name": "union", "type": ["string", "null"], "doc": "some union field" },
+    { "name": "fixed", "type": { "type": "fixed", "size": 10, "logicalType": "decimal", "precision": 10, "scale": 10 }, "doc": "some union field" },
+    { "name": "map", "type": { "type": "map", "values": "string" }, "doc": "some union field" },
+    { "name": "enum", "type": { "type": "enum", "symbols": ["some", "any"], "default": "some" } }
+  ]
+}`
+```
+
+We can transpile it to `avroschema-definer` code with such command:
+
+```bash
+$ avroschema-definer template schema.avsc
+```
+
+After that `./outputSchema.ts` will be created with next output:
+
+```typescript
+import A from 'avroschema-definer'
+
+/**
+ * Some description // <--- This was parsed from schema.avsc top comment 
+ */
+
+// This name was also parsed from `@variableName NameFromCommentTag` tag from `schema.avsc`
+//           |
+//           |
+const NameFromCommentTag = A.name('someRecord').namespace('namespace').record({
+  field: A.string().logicalType('uuid').doc('some field').aliases('first'),
+  arr: A.array(A.string()).doc('some field').order('ascending'),
+  union: A.union(A.string(), A.null()).doc('some union field'),
+  fixed: A.fixed(10).logicalType<number>('decimal', { precision: 10, scale: 10}).doc('some union field'),
+  map: A.map(A.string()).doc('some union field'),
+  enum: A.enum('some', 'any').default("some")
+})
+```
+
+By default this script use next `.ejs` template:
+
+```typescript
+import A from 'avroschema-definer'
+<% if (comment.description) { %>
+/**
+ * <%= comment.description %>
+ */
+<% } %>
+const <%= comment.tags ? comment.tags.variableName.name : 'Schema' %> = <%- avscToDefinerCode(schema) %>
+
+export default <%= comment.tags ? comment.tags.variableName.name : 'Schema' %>
+```
+You can pass custom `.ejs` template with `--template` option.
+
+Full list of options available during rendering you can find in cli help:
+```bash
+$ avroschema-definer template --help
+```
+
+### Usage from code
+Example of using transpiler from code:
+```typescript
+import { templater, avscToDefinerCode } from 'avroschema-definer'
+
+const result = templater('Your <%= additionalData %> ejs template')(plainAvroSchemaString, { additionalData: 'awesome' })
+
+console.log(result) // Your awesome ejs template
+
+// Or you can use plain transpiler
+
+console.log(avscToDefinerCode({ type: "string" })) // A.string()
+```
+
 ## ⭐️ Show your support
 
 Give a ⭐️ if this project helped you!
 
-## 📚 Documentation
+## 📚 API Documentation
 
 Full documentation available [here](https://sujimoshi.github.io/avroschema-definer/)
 

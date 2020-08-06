@@ -1,0 +1,43 @@
+#! /usr/bin/env node
+
+const { writeFileSync, readFileSync } = require('fs')
+const { resolve } = require('path')
+const { templater } = require('../dist/index.js')
+
+// eslint-disable-next-line no-unused-expressions
+require('yargs').command({
+  command: 'template <schema> [template] [out]',
+  describe: 'Allows you to transpile your .avsc files into js/ts code using ejs templates.',
+  builder: {
+    template: {
+      alias: ['t'],
+      default: null,
+      description: [
+        'Path to .ejs template file. If not provided default template will be used. Options that can be used in the template:',
+        '',
+        'comment.description? - Description parsed from comments',
+        '',
+        'comment.tags?[tag].(tag | name | type | description) - Tags in format (@tag {type} name description) parsed from comments',
+        '',
+        'schema - Your plain avro schema parsed using `JSON.parse`',
+        '',
+        'avscToDefinerCode(schema) - Function that transpile your plain avro schema in avroschema-definer code',
+        ''
+      ].join('\n')
+    },
+    out: {
+      alias: ['o'],
+      default: './outputSchema.ts',
+      description: 'Output file path (relative to CWD)'
+    },
+    schema: {
+      alias: ['s'],
+      description: 'Path to your .avsc file to parse (relative to CWD)'
+    }
+  },
+  handler: ({ schema, out, template }) => {
+    const templateContent = template ? readFileSync(resolve(process.cwd(), template)) : undefined
+    const schemaContent = readFileSync(resolve(process.cwd(), schema)).toString()
+    writeFileSync(resolve(process.cwd(), out), templater(templateContent)(schemaContent))
+  }
+}).demandCommand().help().argv
