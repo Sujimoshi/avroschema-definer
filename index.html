@@ -77,7 +77,10 @@
 						<img alt="License: ISC" src="https://codecov.io/gh/Sujimoshi/avroschema-definer/branch/master/graph/badge.svg" />
 					</a>
 				</p>
-				<p>This package provides simple, well typed API for creating Avro Schemas</p>
+				<p>This package provides simple, well typed API for creating Avro Schemas.</p>
+				<a href="#a-hrefhttpssujimoshigithubioavroschema-definerhomepagea" id="a-hrefhttpssujimoshigithubioavroschema-definerhomepagea" style="color: inherit; text-decoration: none;">
+					<h3><a href="https://sujimoshi.github.io/avroschema-definer/">Homepage</a></h3>
+				</a>
 				<a href="#🔥-install" id="🔥-install" style="color: inherit; text-decoration: none;">
 					<h2>🔥 Install</h2>
 				</a>
@@ -88,9 +91,6 @@
 				<p>This package is used to create Avro Schema definitions.  It was written in typescript and provide a lot of usefull info from typings, such as infering interface types from schema. </p>
 				<blockquote>
 					<p>This package does not compile your schemas, it just provide simple API for creation of schemas (see <a href="https://github.com/mtth/avsc">avsc</a> for compilation purposes).</p>
-				</blockquote>
-				<blockquote>
-					<p>Also you can transpile your plain Avro Schemas into jsonschema-definer code <a href="https://sujimoshi.github.io/avroschema-definer/converter/index.html">here</a></p>
 				</blockquote>
 				<p>Here is an example:</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> A <span class="hljs-keyword">from</span> <span class="hljs-string">'avroschema-definer'</span>
@@ -144,12 +144,104 @@
 }
 */</span>
 </code></pre>
+				<a href="#🏃♂️-migration-from-plain-avro-schemas" id="🏃♂️-migration-from-plain-avro-schemas" style="color: inherit; text-decoration: none;">
+					<h2>🏃‍♂️ Migration from plain avro schemas</h2>
+				</a>
+				<p>Working with plain .avsc schemas can be painfull. So I written small cli which can transpile your plain avro schemas into <code>avroschema-definer</code> code.</p>
+				<pre><code class="language-bash">$ avroschema-definer template --<span class="hljs-built_in">help</span>
+avroschema-definer template &lt;schema&gt; [template] [out]
+
+Allows you to transpile your .avsc files into js/ts code using ejs templates.
+
+Options:
+  --template, -t  Path to .ejs template file. If not provided default template
+                  will be used. Options that can be used <span class="hljs-keyword">in</span> the template:
+
+                  comment.description? - Description parsed from comments
+
+                  comment.tags?[tag].(tag | name | <span class="hljs-built_in">type</span> | description) - Tags
+                  <span class="hljs-keyword">in</span> format (@tag {<span class="hljs-built_in">type</span>} name description) parsed from comments
+
+                  schema - Your plain avro schema parsed using `JSON.parse`
+
+                  avscToDefinerCode(schema) - Function that transpile your
+                  plain avro schema <span class="hljs-keyword">in</span> avroschema-definer code
+                                                              [By default: null]
+  --out, -o       Output file path (relative to CWD)
+                                               [By default: <span class="hljs-string">"./outputSchema.ts"</span>]
+  --schema, -s    Path to your .avsc file to parse (relative to CWD)</code></pre>
+				<p>Example:</p>
+				<p>Lets say we have plain <code>schema.avsc</code>:</p>
+				<pre><code class="language-avsc">/**
+ * Some description
+ *
+ * @variableName NameFromCommentTag
+ */
+{
+  &quot;namespace&quot;: &quot;namespace&quot;,
+  &quot;type&quot;: &quot;record&quot;,
+  &quot;name&quot;: &quot;someRecord&quot;,
+  &quot;fields&quot;: [
+    { &quot;name&quot;: &quot;field&quot;, &quot;aliases&quot;: [&quot;first&quot;], &quot;type&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;logicalType&quot;: &quot;uuid&quot; }, &quot;doc&quot;: &quot;some field&quot; },
+    { &quot;name&quot;: &quot;arr&quot;, &quot;order&quot;: &quot;ascending&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some field&quot; },
+    { &quot;name&quot;: &quot;union&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;], &quot;doc&quot;: &quot;some union field&quot; },
+    { &quot;name&quot;: &quot;fixed&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;fixed&quot;, &quot;size&quot;: 10, &quot;logicalType&quot;: &quot;decimal&quot;, &quot;precision&quot;: 10, &quot;scale&quot;: 10 }, &quot;doc&quot;: &quot;some union field&quot; },
+    { &quot;name&quot;: &quot;map&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;map&quot;, &quot;values&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some union field&quot; },
+    { &quot;name&quot;: &quot;enum&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;symbols&quot;: [&quot;some&quot;, &quot;any&quot;], &quot;default&quot;: &quot;some&quot; } }
+  ]
+}`</code></pre>
+				<p>We can transpile it to <code>avroschema-definer</code> code with such command:</p>
+				<pre><code class="language-bash">$ avroschema-definer template schema.avsc</code></pre>
+				<p>After that <code>./outputSchema.ts</code> will be created with next output:</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> A <span class="hljs-keyword">from</span> <span class="hljs-string">'avroschema-definer'</span>
+
+<span class="hljs-comment">/**
+ * Some description // &lt;--- This was parsed from schema.avsc top comment 
+ */</span>
+
+<span class="hljs-comment">// This name was also parsed from `@variableName NameFromCommentTag` tag from `schema.avsc`</span>
+<span class="hljs-comment">//           |</span>
+<span class="hljs-comment">//           |</span>
+<span class="hljs-keyword">const</span> NameFromCommentTag = A.name(<span class="hljs-string">'someRecord'</span>).namespace(<span class="hljs-string">'namespace'</span>).record({
+  field: A.string().logicalType(<span class="hljs-string">'uuid'</span>).doc(<span class="hljs-string">'some field'</span>).aliases(<span class="hljs-string">'first'</span>),
+  arr: A.array(A.string()).doc(<span class="hljs-string">'some field'</span>).order(<span class="hljs-string">'ascending'</span>),
+  union: A.union(A.string(), A.null()).doc(<span class="hljs-string">'some union field'</span>),
+  fixed: A.fixed(<span class="hljs-number">10</span>).logicalType&lt;<span class="hljs-built_in">number</span>&gt;(<span class="hljs-string">'decimal'</span>, { precision: <span class="hljs-number">10</span>, scale: <span class="hljs-number">10</span>}).doc(<span class="hljs-string">'some union field'</span>),
+  map: A.map(A.string()).doc(<span class="hljs-string">'some union field'</span>),
+  <span class="hljs-keyword">enum</span>: A.enum(<span class="hljs-string">'some'</span>, <span class="hljs-string">'any'</span>).default(<span class="hljs-string">"some"</span>)
+})</code></pre>
+				<p>By default this script use next <code>.ejs</code> template:</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> A <span class="hljs-keyword">from</span> <span class="hljs-string">'avroschema-definer'</span>
+&lt;% <span class="hljs-keyword">if</span> (comment.description) { %&gt;
+<span class="hljs-comment">/**
+ * &lt;%= comment.description %&gt;
+ */</span>
+&lt;% } %&gt;
+<span class="hljs-keyword">const</span> &lt;%= comment.tags ? comment.tags.variableName.name : <span class="hljs-string">'Schema'</span> %&gt; = &lt;%- avscToDefinerCode(schema) %&gt;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &lt;%= comment.tags ? comment.tags.variableName.name : <span class="hljs-string">'Schema'</span> %&gt;</code></pre>
+				<p>You can pass custom <code>.ejs</code> template with <code>--template</code> option.</p>
+				<p>Full list of options available during rendering you can find in cli help:</p>
+				<pre><code class="language-bash">$ avroschema-definer template --<span class="hljs-built_in">help</span></code></pre>
+				<a href="#usage-from-code" id="usage-from-code" style="color: inherit; text-decoration: none;">
+					<h3>Usage from code</h3>
+				</a>
+				<p>Example of using transpiler from code:</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { templater, avscToDefinerCode } <span class="hljs-keyword">from</span> <span class="hljs-string">'avroschema-definer'</span>
+
+<span class="hljs-keyword">const</span> result = templater(<span class="hljs-string">'Your &lt;%= additionalData %&gt; ejs template'</span>)(plainAvroSchemaString, { additionalData: <span class="hljs-string">'awesome'</span> })
+
+<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// Your awesome ejs template</span>
+
+<span class="hljs-comment">// Or you can use plain transpiler</span>
+
+<span class="hljs-built_in">console</span>.log(avscToDefinerCode({ <span class="hljs-keyword">type</span>: <span class="hljs-string">"string"</span> })) <span class="hljs-comment">// A.string()</span></code></pre>
 				<a href="#⭐️-show-your-support" id="⭐️-show-your-support" style="color: inherit; text-decoration: none;">
 					<h2>⭐️ Show your support</h2>
 				</a>
 				<p>Give a ⭐️ if this project helped you!</p>
-				<a href="#📚-documentation" id="📚-documentation" style="color: inherit; text-decoration: none;">
-					<h2>📚 Documentation</h2>
+				<a href="#📚-api-documentation" id="📚-api-documentation" style="color: inherit; text-decoration: none;">
+					<h2>📚 API Documentation</h2>
 				</a>
 				<p>Full documentation available <a href="https://sujimoshi.github.io/avroschema-definer/">here</a></p>
 				<a href="#main-exported-variable-a-a-hrefhttpssujimoshigithubioavroschema-definerclassesschemafactoryhtmlschemafactorya-extends-a-hrefhttpssujimoshigithubioavroschema-definerclassesbaseschemahtmlbaseschemaa" id="main-exported-variable-a-a-hrefhttpssujimoshigithubioavroschema-definerclassesschemafactoryhtmlschemafactorya-extends-a-hrefhttpssujimoshigithubioavroschema-definerclassesbaseschemahtmlbaseschemaa" style="color: inherit; text-decoration: none;">
@@ -243,14 +335,14 @@
 				<a href="#author" id="author" style="color: inherit; text-decoration: none;">
 					<h2>Author</h2>
 				</a>
-				<p>👤 <strong>Igor Solomakha <a href="mailto:&#x66;&#x75;&#109;&#x6f;&#x2e;&#x73;&#117;&#x6a;&#105;&#109;&#111;&#x73;&#x68;&#x69;&#x40;&#103;&#109;&#x61;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#x66;&#x75;&#109;&#x6f;&#x2e;&#x73;&#117;&#x6a;&#105;&#109;&#111;&#x73;&#x68;&#x69;&#x40;&#103;&#109;&#x61;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;</a></strong></p>
+				<p>👤 <strong>Igor Solomakha <a href="mailto:&#x66;&#x75;&#109;&#111;&#x2e;&#x73;&#117;&#106;&#x69;&#x6d;&#111;&#x73;&#x68;&#x69;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;">&#x66;&#x75;&#109;&#111;&#x2e;&#x73;&#117;&#106;&#x69;&#x6d;&#111;&#x73;&#x68;&#x69;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;</a></strong></p>
 				<ul>
 					<li>Github: <a href="https://github.com/Sujimoshi">@Sujimoshi</a></li>
 				</ul>
 				<a href="#📝-license" id="📝-license" style="color: inherit; text-decoration: none;">
 					<h2>📝 License</h2>
 				</a>
-				<p>Copyright © 2020 <a href="https://github.com/Sujimoshi">Igor Solomakha <a href="mailto:&#102;&#117;&#109;&#x6f;&#x2e;&#115;&#x75;&#x6a;&#x69;&#x6d;&#x6f;&#x73;&#x68;&#x69;&#x40;&#103;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#102;&#117;&#109;&#x6f;&#x2e;&#115;&#x75;&#x6a;&#x69;&#x6d;&#x6f;&#x73;&#x68;&#x69;&#x40;&#103;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;</a></a>.<br />
+				<p>Copyright © 2020 <a href="https://github.com/Sujimoshi">Igor Solomakha <a href="mailto:&#x66;&#117;&#109;&#111;&#46;&#x73;&#117;&#x6a;&#105;&#109;&#x6f;&#115;&#104;&#105;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;">&#x66;&#117;&#109;&#111;&#46;&#x73;&#117;&#x6a;&#105;&#109;&#x6f;&#115;&#104;&#105;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;</a></a>.<br />
 				This project is <a href="https://www.isc.org/licenses/">ISC</a> licensed.</p>
 				<hr>
 				<p><em>This README was generated with ❤️ by <a href="https://github.com/kefranabg/readme-md-generator">readme-md-generator</a></em></p>
@@ -299,8 +391,23 @@
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#a" class="tsd-kind-icon">A</a>
 					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#avroschema" class="tsd-kind-icon">avro<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#defaulttemplate" class="tsd-kind-icon">default<wbr>Template</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#avsctodefinercode" class="tsd-kind-icon">avsc<wbr>ToDefiner<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#parseschema" class="tsd-kind-icon">parse<wbr>Schema</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#pick" class="tsd-kind-icon">pick</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#defaultlogicaltypesmapping" class="tsd-kind-icon">default<wbr>Logical<wbr>Types<wbr>Mapping</a>
 					</li>
 				</ul>
 			</nav>
