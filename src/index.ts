@@ -4,6 +4,8 @@ import BaseSchema, { pick } from './base'
 export { BaseSchema }
 export * from './types'
 
+export { default as templater, avscToDefinerCode, parseSchema } from './templater'
+
 export class SchemaFactory extends BaseSchema {
   /**
    * Primitive type. Corresponds to no value
