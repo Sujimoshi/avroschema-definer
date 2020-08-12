@@ -14,7 +14,7 @@ const avroSchema = `
     { "name": "field", "aliases": ["first"], "type": { "type": "string", "logicalType": "uuid" }, "doc": "some field" },
     { "name": "arr", "order": "ascending", "type": { "type": "array", "items": "string" }, "doc": "some field" },
     { "name": "union", "type": ["string", "null"], "doc": "some union field" },
-    { "name": "fixed", "type": { "type": "fixed", "size": 10, "logicalType": "decimal", "precision": 10, "scale": 10 }, "doc": "some union field" },
+    { "name": "fixed", "type": { "type": "fixed", "size": 10, "logicalType": "decimal", "precision": 10, "scale": 10 }, "doc": "some's union field's" },
     { "name": "map", "type": { "type": "map", "values": "string" }, "doc": "some union field" },
     { "name": "enum", "type": { "type": "enum", "symbols": ["some", "any"], "default": "some" } }
   ]
@@ -45,7 +45,7 @@ describe('avsc templating', () => {
           { name: 'field', aliases: ['first'], type: { type: 'string', logicalType: 'uuid' }, doc: 'some field' },
           { doc: 'some field', order: 'ascending', name: 'arr', type: { type: 'array', items: 'string' } },
           { doc: 'some union field', name: 'union', type: ['string', 'null'] },
-          { name: 'fixed', type: { type: 'fixed', size: 10, logicalType: 'decimal', precision: 10, scale: 10 }, doc: 'some union field' },
+          { name: 'fixed', type: { type: 'fixed', size: 10, logicalType: 'decimal', precision: 10, scale: 10 }, doc: 'some\'s union field\'s' },
           { name: 'map', type: { type: 'map', values: 'string' }, doc: 'some union field' },
           { name: 'enum', type: { type: 'enum', symbols: ['some', 'any'], default: 'some' } }
         ]
@@ -65,7 +65,7 @@ const NameFromCommentTag = A.name('someRecord').namespace('namespace').record({
   field: A.string().logicalType('uuid').doc('some field').aliases('first'),
   arr: A.array(A.string()).doc('some field').order('ascending'),
   union: A.union(A.string(), A.null()).doc('some union field'),
-  fixed: A.fixed(10).logicalType<number>('decimal', { precision: 10, scale: 10}).doc('some union field'),
+  fixed: A.fixed(10).logicalType<number>('decimal', { precision: 10, scale: 10 }).doc('some\\'s union field\\'s'),
   map: A.map(A.string()).doc('some union field'),
   enum: A.enum('some', 'any').default("some")
 })
