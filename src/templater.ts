@@ -84,13 +84,13 @@ export const avscToDefinerCode = (avro: BaseAvroSchema | BaseAvroSchema[], logic
       if (typeof type !== 'object' || !type.logicalType) { return '' }
 
       return `.logicalType${logicalTypesMapping[type.logicalType] || ''}('${type.logicalType}'${type.precision && type.scale
-        ? `, { precision: ${type.precision}, scale: ${type.scale}}`
+        ? `, { precision: ${type.precision}, scale: ${type.scale} }`
         : ''})`
     }
 
     const suffix = (common: Common) => {
       if (typeof common !== 'object') { return '' }
-      const doc = common.doc ? `.doc('${common.doc}')` : ''
+      const doc = common.doc ? `.doc('${common.doc.replace(/'/g, "\\'")}')` : ''
       const def = common.default
         ? `.default(${JSON.stringify(common.default)})`
         : ''
