@@ -30,15 +30,16 @@ export default class BaseSchema<T = any, S = BaseAvroSchema> {
     return this.copyWith({ plain })
   }
 
-  logicalType <N = T> (logicalType: Required<BaseAvroSchema>['logicalType'], raw?: { precision: number, scale?: number }): BaseSchema<N, S>;
-  logicalType <N = T> (logicalType: string, raw?: object): BaseSchema<N, S>;
-
   /**
    * Set logical type for the schema
    *
    * @reference http://avro.apache.org/docs/1.9.2/spec.html#Logical+Types
    */
-  logicalType <N = T> (logicalType: string, raw?: object): BaseSchema<N, S> {
+  logicalType (logicalType: Required<BaseAvroSchema>['logicalType'], raw?: { precision: number, scale?: number }): this;
+  logicalType (logicalType: string, raw?: object): this;
+  logicalType <N> (logicalType: Required<BaseAvroSchema>['logicalType'], raw?: { precision: number, scale?: number }): BaseSchema<N, S>;
+  logicalType <N> (logicalType: string, raw?: object): BaseSchema<N, S>;
+  logicalType <N> (logicalType: string, raw?: object): BaseSchema<N, S> {
     return this.copyWith({ plain: { logicalType, ...raw } }) as any
   }
 
