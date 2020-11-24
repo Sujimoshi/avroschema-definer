@@ -1,6 +1,6 @@
 {
   "name": "avroschema-definer",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Avro Schema constructor",
   "main": "dist/index.js",
   "scripts": {
