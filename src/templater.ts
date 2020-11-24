@@ -1,4 +1,5 @@
 import { compile } from 'ejs'
+import json5 from 'json5'
 import commentParser, { Tag } from 'comment-parser'
 import { BaseAvroSchema, RecordAvroSchema, ArrayAvroSchema, FixedAvroSchema, MapAvroSchema, EnumAvroSchema } from './types'
 import { Common } from './base'
@@ -17,7 +18,7 @@ export default <%= comment.tags ? comment.tags.variableName.name : 'Schema' %>
 
 export const parseSchema = (schema: string) => {
   const [comment] = commentParser(schema)
-  const avro: BaseAvroSchema | BaseAvroSchema[] = JSON.parse(schema.replace(/(\/\*[\S\s]*?\*\/)|(\/\/[^\n]*)/gm, ''))
+  const avro: BaseAvroSchema | BaseAvroSchema[] = json5.parse(schema)
   return {
     comment: {
       description: comment?.description,
