@@ -1,7 +1,7 @@
 import { compile } from 'ejs'
 import json5 from 'json5'
 import commentParser, { Tag } from 'comment-parser'
-import { BaseAvroSchema, RecordAvroSchema, ArrayAvroSchema, FixedAvroSchema, MapAvroSchema, EnumAvroSchema } from './types'
+import { BaseAvroSchema, RecordAvroSchema, ArrayAvroSchema, FixedAvroSchema, MapAvroSchema, EnumAvroSchema, FieldAvroSchema } from './types'
 import { Common } from './base'
 
 export const defaultTemplate = `import A from 'avroschema-definer'
@@ -40,6 +40,24 @@ const defaultLogicalTypesMapping = {
   decimal: '<number>'
 }
 
+function escapeJsComment (value: string) {
+  return value
+    .replace(/[/][*]/g, '\\/*')
+    .replace(/[*][/]/g, '*\\/')
+}
+
+function composeJSDoc (field: FieldAvroSchema): string {
+  const jsdocItems = ['/**']
+  if (field.aliases) jsdocItems.push(` * @avro-aliases ${escapeJsComment(field.aliases.join(','))}`)
+  if (field.order) jsdocItems.push(` * @avro-order ${escapeJsComment(field.order)}`)
+  if (field.doc) jsdocItems.push(` * @avro-doc ${escapeJsComment(field.doc)}`)
+  if (field.default) jsdocItems.push(` * @avro-default ${escapeJsComment(field.default)}`)
+  jsdocItems.push(' */\n')
+
+  if (jsdocItems.length === 2) return ''
+  return jsdocItems.map(v => `  ${v}`).join('\n')
+}
+
 export const avscToDefinerCode = (avro: BaseAvroSchema | BaseAvroSchema[], logicalTypesMapping: Record<string, string> = defaultLogicalTypesMapping) => {
   const recursive = (avro: BaseAvroSchema | BaseAvroSchema[]): string => {
     const typeName = Array.isArray(avro) ? 'union' : typeof avro === 'string' ? avro : avro.type
@@ -49,7 +67,8 @@ export const avscToDefinerCode = (avro: BaseAvroSchema | BaseAvroSchema[], logic
     const mapping: Record<string, any> = {
       record: (record: RecordAvroSchema) => {
         return `.record({\n${record.fields.map(field => {
-            return `  ${field.name}: ${recursive(field.type)}${suffix(field as unknown as Common)}`
+            const jsdocSection = composeJSDoc(field)
+            return `${jsdocSection}  ${field.name}: ${recursive(field.type)}${suffix(field as unknown as Common)}`
           }).join(',\n')}\n})`
       },
       array: (array: ArrayAvroSchema) => {
