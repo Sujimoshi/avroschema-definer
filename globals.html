@@ -99,6 +99,8 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="globals.html#avsctodefinercode" class="tsd-kind-icon">avsc<wbr>ToDefiner<wbr>Code</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#composejsdoc" class="tsd-kind-icon">composeJSDoc</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#escapejscomment" class="tsd-kind-icon">escape<wbr>JsComment</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#parseschema" class="tsd-kind-icon">parse<wbr>Schema</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#pick" class="tsd-kind-icon">pick</a></li>
 							</ul>
@@ -120,17 +122,17 @@
 					<div class="tsd-signature tsd-kind-icon">A<span class="tsd-signature-symbol">:</span> <a href="classes/schemafactory.html" class="tsd-signature-type">SchemaFactory</a><span class="tsd-signature-symbol"> = new SchemaFactory()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/index.ts#L183">index.ts:183</a></li>
+							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/index.ts#L183">index.ts:183</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="avroschema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> avro<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">avro<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"/*** Some description** @variableName NameFromCommentTag*/{&quot;namespace&quot;: &quot;namespace&quot;,&quot;type&quot;: &quot;record&quot;,&quot;name&quot;: &quot;someRecord&quot;,&quot;fields&quot;: [{ &quot;name&quot;: &quot;field&quot;, &quot;aliases&quot;: [&quot;first&quot;], &quot;type&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;logicalType&quot;: &quot;uuid&quot; }, &quot;doc&quot;: &quot;some /* comment in doc */ // field&quot; },{ &quot;name&quot;: &quot;arr&quot;, &quot;order&quot;: &quot;ascending&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some field&quot; },{ &quot;name&quot;: &quot;union&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;], &quot;doc&quot;: &quot;some union field&quot; },{ &quot;name&quot;: &quot;fixed&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;fixed&quot;, &quot;size&quot;: 10, &quot;logicalType&quot;: &quot;decimal&quot;, &quot;precision&quot;: 10, &quot;scale&quot;: 10 }, &quot;doc&quot;: &quot;some&#x27;s union field&#x27;s&quot; },{ &quot;name&quot;: &quot;map&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;map&quot;, &quot;values&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some union field&quot; },{ &quot;name&quot;: &quot;enum&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;symbols&quot;: [&quot;some&quot;, &quot;any&quot;], &quot;default&quot;: &quot;some&quot; } }]}"</span><span class="tsd-signature-symbol"> = &#x60;/*** Some description** @variableName NameFromCommentTag*/{&quot;namespace&quot;: &quot;namespace&quot;,&quot;type&quot;: &quot;record&quot;,&quot;name&quot;: &quot;someRecord&quot;,&quot;fields&quot;: [{ &quot;name&quot;: &quot;field&quot;, &quot;aliases&quot;: [&quot;first&quot;], &quot;type&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;logicalType&quot;: &quot;uuid&quot; }, &quot;doc&quot;: &quot;some /* comment in doc */ // field&quot; },{ &quot;name&quot;: &quot;arr&quot;, &quot;order&quot;: &quot;ascending&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some field&quot; },{ &quot;name&quot;: &quot;union&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;], &quot;doc&quot;: &quot;some union field&quot; },{ &quot;name&quot;: &quot;fixed&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;fixed&quot;, &quot;size&quot;: 10, &quot;logicalType&quot;: &quot;decimal&quot;, &quot;precision&quot;: 10, &quot;scale&quot;: 10 }, &quot;doc&quot;: &quot;some&#x27;s union field&#x27;s&quot; },{ &quot;name&quot;: &quot;map&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;map&quot;, &quot;values&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some union field&quot; },{ &quot;name&quot;: &quot;enum&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;symbols&quot;: [&quot;some&quot;, &quot;any&quot;], &quot;default&quot;: &quot;some&quot; } }]}&#x60;</span></div>
+					<div class="tsd-signature tsd-kind-icon">avro<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"/*** Some description** @variableName NameFromCommentTag*/{&quot;namespace&quot;: &quot;namespace&quot;,&quot;type&quot;: &quot;record&quot;,&quot;name&quot;: &quot;someRecord&quot;,&quot;fields&quot;: [{ &quot;name&quot;: &quot;field&quot;, &quot;aliases&quot;: [&quot;first&quot;], &quot;type&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;logicalType&quot;: &quot;uuid&quot; }, &quot;doc&quot;: &quot;some /* comment in doc */ // field&quot; },{ &quot;name&quot;: &quot;arr&quot;, &quot;order&quot;: &quot;ascending&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some field&quot; },{ &quot;name&quot;: &quot;union&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;], &quot;doc&quot;: &quot;some union field&quot;, &quot;default&quot;: &quot;some_string&quot; },{ &quot;name&quot;: &quot;fixed&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;fixed&quot;, &quot;size&quot;: 10, &quot;logicalType&quot;: &quot;decimal&quot;, &quot;precision&quot;: 10, &quot;scale&quot;: 10 }, &quot;doc&quot;: &quot;some&#x27;s union field&#x27;s&quot; },{ &quot;name&quot;: &quot;map&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;map&quot;, &quot;values&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some union field&quot; },{ &quot;name&quot;: &quot;enum&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;symbols&quot;: [&quot;some&quot;, &quot;any&quot;], &quot;default&quot;: &quot;some&quot; } }]}"</span><span class="tsd-signature-symbol"> = &#x60;/*** Some description** @variableName NameFromCommentTag*/{&quot;namespace&quot;: &quot;namespace&quot;,&quot;type&quot;: &quot;record&quot;,&quot;name&quot;: &quot;someRecord&quot;,&quot;fields&quot;: [{ &quot;name&quot;: &quot;field&quot;, &quot;aliases&quot;: [&quot;first&quot;], &quot;type&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;logicalType&quot;: &quot;uuid&quot; }, &quot;doc&quot;: &quot;some /* comment in doc */ // field&quot; },{ &quot;name&quot;: &quot;arr&quot;, &quot;order&quot;: &quot;ascending&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some field&quot; },{ &quot;name&quot;: &quot;union&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;], &quot;doc&quot;: &quot;some union field&quot;, &quot;default&quot;: &quot;some_string&quot; },{ &quot;name&quot;: &quot;fixed&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;fixed&quot;, &quot;size&quot;: 10, &quot;logicalType&quot;: &quot;decimal&quot;, &quot;precision&quot;: 10, &quot;scale&quot;: 10 }, &quot;doc&quot;: &quot;some&#x27;s union field&#x27;s&quot; },{ &quot;name&quot;: &quot;map&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;map&quot;, &quot;values&quot;: &quot;string&quot; }, &quot;doc&quot;: &quot;some union field&quot; },{ &quot;name&quot;: &quot;enum&quot;, &quot;type&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;symbols&quot;: [&quot;some&quot;, &quot;any&quot;], &quot;default&quot;: &quot;some&quot; } }]}&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/__tests__/templater.test.ts#L3">__tests__/templater.test.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/__tests__/templater.test.ts#L3">__tests__/templater.test.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -140,7 +142,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"import A from &#x27;avroschema-definer&#x27;&lt;% if (comment.description) { -%&gt;/*** &lt;%&#x3D; comment.description %&gt;*/&lt;% } -%&gt;const &lt;%&#x3D; comment.tags ? comment.tags.variableName.name : &#x27;Schema&#x27; %&gt; &#x3D; &lt;%- avscToDefinerCode(schema) %&gt;export default &lt;%&#x3D; comment.tags ? comment.tags.variableName.name : &#x27;Schema&#x27; %&gt;"</span><span class="tsd-signature-symbol"> = &#x60;import A from &#x27;avroschema-definer&#x27;&lt;% if (comment.description) { -%&gt;/*** &lt;%&#x3D; comment.description %&gt;*/&lt;% } -%&gt;const &lt;%&#x3D; comment.tags ? comment.tags.variableName.name : &#x27;Schema&#x27; %&gt; &#x3D; &lt;%- avscToDefinerCode(schema) %&gt;export default &lt;%&#x3D; comment.tags ? comment.tags.variableName.name : &#x27;Schema&#x27; %&gt;&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L7">templater.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L7">templater.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -157,7 +159,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L43">templater.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L61">templater.ts:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -174,6 +176,52 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="composejsdoc" class="tsd-anchor"></a>
+					<h3>composeJSDoc</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">composeJSDoc<span class="tsd-signature-symbol">(</span>field<span class="tsd-signature-symbol">: </span><a href="interfaces/fieldavroschema.html" class="tsd-signature-type">FieldAvroSchema</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L49">templater.ts:49</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>field: <a href="interfaces/fieldavroschema.html" class="tsd-signature-type">FieldAvroSchema</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="escapejscomment" class="tsd-anchor"></a>
+					<h3>escape<wbr>JsComment</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">escape<wbr>JsComment<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L43">templater.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="parseschema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> parse<wbr>Schema</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -183,7 +231,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L19">templater.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L19">templater.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -227,7 +275,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/base.ts#L12">base.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/base.ts#L12">base.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -255,7 +303,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Logical<wbr>Types<wbr>Mapping<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L37">templater.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L37">templater.ts:37</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -264,7 +312,7 @@
 						<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&lt;Date&gt;&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L39">templater.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L39">templater.ts:39</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -274,7 +322,7 @@
 						<div class="tsd-signature tsd-kind-icon">decimal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&lt;number&gt;&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L40">templater.ts:40</a></li>
+								<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L40">templater.ts:40</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -284,7 +332,7 @@
 						<div class="tsd-signature tsd-kind-icon">timestamp-<wbr>millis<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&lt;Date&gt;&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/99bf150/src/templater.ts#L38">templater.ts:38</a></li>
+								<li>Defined in <a href="https://github.com/Sujimoshi/avroschema-definer/blob/c170432/src/templater.ts#L38">templater.ts:38</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -342,6 +390,12 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#avsctodefinercode" class="tsd-kind-icon">avsc<wbr>ToDefiner<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#composejsdoc" class="tsd-kind-icon">composeJSDoc</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#escapejscomment" class="tsd-kind-icon">escape<wbr>JsComment</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#parseschema" class="tsd-kind-icon">parse<wbr>Schema</a>
