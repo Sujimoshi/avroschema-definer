@@ -35,7 +35,7 @@ describe('SchemaFactory', () => {
 
   it('A.record()', () => {
     expect(A.record({ some: A.enum('some', 'any') }).valueOf())
-      .toEqual({ type: 'record', fields: [{ name: 'some', type: { name: 'some_value', type: 'enum', symbols: ['some', 'any'] } }] })
+      .toEqual({ type: 'record', fields: [{ name: 'some', type: { type: 'enum', symbols: ['some', 'any'] } }] })
   })
 
   it('A.record() with predefined field name', () => {

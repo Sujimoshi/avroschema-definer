@@ -105,7 +105,7 @@ export class SchemaFactory extends BaseSchema {
   record <T extends Record<string, BaseSchema<any, any>>> (record: T) {
     const fields: FieldAvroSchema[] = []
     for (const name in record) {
-      const schema = !record[name].context.name ? record[name].name(`${name}_value`) : record[name]
+      const schema = record[name]
       fields.push({ ...pick(schema.context)('doc', 'default', 'order', 'aliases'), name, type: schema.valueOf() })
     }
     return new BaseSchema<{ [K in keyof T]: T[K]['type'] }, RecordAvroSchema>(
